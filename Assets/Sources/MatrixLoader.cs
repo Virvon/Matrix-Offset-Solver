@@ -20,12 +20,42 @@ namespace Sources
             return matrices;
         }
 
+        public void ExportToJson(List<Matrix4x4> matrices, string path)
+        {
+            string jsonPath = Path.Combine(Application.streamingAssetsPath, path);
+            
+            if (File.Exists(jsonPath))
+                File.Delete(jsonPath);
+            
+            MatrixListWrapper wrapper = new()
+            {
+                matrices = new List<MatrixJson>(matrices.Count),
+            };
+            
+            foreach (Matrix4x4 matrix in matrices)
+            {
+                wrapper.matrices.Add(new MatrixJson
+                {
+                    m00 = matrix.m00, m10 = matrix.m10, m20 = matrix.m20, m30 = matrix.m30,
+                    m01 = matrix.m01, m11 = matrix.m11, m21 = matrix.m21, m31 = matrix.m31,
+                    m02 = matrix.m02, m12 = matrix.m12, m22 = matrix.m22, m32 = matrix.m32,
+                    m03 = matrix.m03, m13 = matrix.m13, m23 = matrix.m23, m33 = matrix.m33
+                });
+            }
+            
+            string json = JsonUtility.ToJson(wrapper, true);
+            
+            json = json.Replace("{\"matrices\":", "");
+            
+            File.WriteAllText(jsonPath, json);
+        }
+
         private List<Matrix4x4> ParseJsonToMatrices(string jsonText)
         {
             if (jsonText.Trim().StartsWith("{") == false)
                 jsonText = "{\"matrices\":" + jsonText + "}";
 
-            MatrixArrayWrapper wrapper = JsonUtility.FromJson<MatrixArrayWrapper>(jsonText);
+            MatrixListWrapper wrapper = JsonUtility.FromJson<MatrixListWrapper>(jsonText);
 
             List<Matrix4x4> matrices = new List<Matrix4x4>();
             
@@ -54,7 +84,7 @@ namespace Sources
         }
 
         [Serializable]
-        private class MatrixArrayWrapper
+        private class MatrixListWrapper
         {
             public List<MatrixJson> matrices;
         }

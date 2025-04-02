@@ -9,6 +9,7 @@ namespace Sources
     {
         private const string ModelPath = "model.json";
         private const string SpacePath = "space.json";
+        private const string OffsetsPath = "offsets.json";
 
         [SerializeField] private Transform _container;
         
@@ -32,6 +33,8 @@ namespace Sources
             List<Matrix4x4> validOffsets = spaceMatrices.GetOffsets(modelMatrices);
             
             stopwatch.Stop();
+            
+            _matrixLoader.ExportToJson(validOffsets, OffsetsPath);
             
             Debug.Log($"Found {validOffsets.Count} valid offsets per time: {stopwatch.Elapsed}");
 
