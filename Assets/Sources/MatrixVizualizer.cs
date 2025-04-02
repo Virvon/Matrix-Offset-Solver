@@ -4,11 +4,19 @@ using UnityEngine;
 
 namespace Sources
 {
-    public class Vizualize : MonoBehaviour
+    public class MatrixVizualizer
     {
-        public void VisualizeModel(List<Matrix4x4> model, Color color) {
-            foreach(var matrix in model) {
+        private readonly Transform _container;
+
+        public MatrixVizualizer(Transform container) =>
+            _container = container;
+
+        public void Visualize(List<Matrix4x4> matrixList, Color color)
+        {
+            foreach(var matrix in matrixList)
+            {
                 GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                cube.transform.parent = _container;
                 
                 cube.transform.position = matrix.GetPosition();
                 cube.transform.rotation = matrix.rotation;
