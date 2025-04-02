@@ -27,11 +27,6 @@ namespace Sources
                 foreach (Matrix4x4 modelMatrix in modelMatrices)
                 {
                     Matrix4x4 transformedMatrix = candidate * modelMatrix;
-                }
-                
-                for (int i = 1; i < modelMatrices.Count; i++)
-                {
-                    Matrix4x4 transformedMatrix = candidate * modelMatrices[i];
                     
                     if (spaceMatrices.ContainsMatrix(transformedMatrix) == false)
                     {
@@ -81,6 +76,7 @@ namespace Sources
                 if (match)
                     return true;
             }
+            
             return false;
         }
     }
