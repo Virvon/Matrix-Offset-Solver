@@ -10,6 +10,7 @@ namespace Sources
         private const string ModelPath = "model.json";
         private const string SpacePath = "space.json";
         private const string OffsetsPath = "offsets.json";
+        private const float OffsetEpsilon = 1e-5f;
 
         [SerializeField] private Transform _container;
         
@@ -30,7 +31,7 @@ namespace Sources
             List<Matrix4x4> modelMatrices = _matrixLoader.Load(ModelPath);
             List<Matrix4x4> spaceMatrices = _matrixLoader.Load(SpacePath);
 
-            List<Matrix4x4> validOffsets = spaceMatrices.GetOffsets(modelMatrices);
+            List<Matrix4x4> validOffsets = spaceMatrices.GetOffsets(modelMatrices, OffsetEpsilon);
             
             stopwatch.Stop();
             

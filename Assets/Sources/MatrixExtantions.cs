@@ -6,7 +6,7 @@ namespace Sources
 {
     public static class MatrixExtantions
     {
-        public static List<Matrix4x4> GetOffsets(this List<Matrix4x4> spaceMatrices, List<Matrix4x4> modelMatrices)
+        public static List<Matrix4x4> GetOffsets(this List<Matrix4x4> spaceMatrices, List<Matrix4x4> modelMatrices, float epsilon)
         {
             List<Matrix4x4> validOffsets = new ();
 
@@ -28,7 +28,7 @@ namespace Sources
                 {
                     Matrix4x4 transformedMatrix = candidate * modelMatrix;
                     
-                    if (spaceMatrices.ContainsMatrix(transformedMatrix) == false)
+                    if (spaceMatrices.ContainsMatrix(transformedMatrix, epsilon) == false)
                     {
                         isValid = false;
                         
@@ -57,7 +57,7 @@ namespace Sources
             }
         }
         
-        public static bool ContainsMatrix(this List<Matrix4x4> matrices, Matrix4x4 target, float epsilon = 1e-5f)
+        public static bool ContainsMatrix(this List<Matrix4x4> matrices, Matrix4x4 target, float epsilon)
         {
             foreach (Matrix4x4 matrix in matrices)
             {
